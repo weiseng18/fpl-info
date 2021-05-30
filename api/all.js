@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {
 }
 
 /**
- * GET /api/users/userId
+ * GET /api/users/:userId
  *
  * Returns array of objects with the following properties
  * - season_name: name of the season
