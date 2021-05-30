@@ -36,3 +36,19 @@ export const overallSeasonData = async (req, res) => {
   const overallData = query.data.past
   res.send(overallData)
 }
+
+/**
+ * GET /api/players/names
+ *
+ * Returns array of player names. Maps ID to name
+ */
+export const playerNames = async (req, res) => {
+  // build query to FPL
+  const url = `${BASE_URL}/bootstrap-static/`
+  const query = await axios.get(url, DEFAULT_OPTIONS)
+
+  // players data stored in elements
+  const players = query.data.elements
+  const playerNames = players.map((one) => one.web_name)
+  res.send(playerNames)
+}
