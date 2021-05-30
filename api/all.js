@@ -84,3 +84,34 @@ export const gameweekScores = async (req, res) => {
   })
   res.send(pointsInfo)
 }
+
+/**
+ * GET /api/users/:userId/gameweeks/:gameweekId
+ *
+ * Returns array of objects, user picks for that gameweek
+ * - id
+ * - multiplier
+ * - is_captain
+ * - is_vice_captain
+ */
+
+export const userGameweekPicks = async (req, res) => {
+  // unpack params
+  const userId = req.query.userId
+  const gameweekId = req.query.gameweekId
+
+  // build query to FPL
+  const url = `/entry/${userId}/event/${gameweekId}/picks/`
+  const query = await axios.get(url)
+
+  // picks stored in picks
+  const picks = query.data.picks
+
+  const picksInfo = picks.map((one) => ({
+    id: one.element,
+    multiplier: one.multiplier,
+    is_captain: one.is_captain,
+    is_vice_captain: one.is_vice_captain
+  }))
+  res.send(picksInfo)
+}
