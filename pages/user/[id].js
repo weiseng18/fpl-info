@@ -12,7 +12,7 @@ const User = () => {
 
   useEffect(() => {
     const getUserHistory = async (id) => {
-      const res = await axios.get(`/api/user/${id}`)
+      const res = await axios.get(`/api/users/${id}`)
       setSeasonsData(res.data)
     }
     // if ID param is provided

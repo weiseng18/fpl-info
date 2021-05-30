@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {
 }
 
 /**
- * GET /api/user/id
+ * GET /api/users/userId
  *
  * Returns array of objects with the following properties
  * - season_name: name of the season
@@ -25,10 +25,10 @@ const DEFAULT_OPTIONS = {
  */
 export const overallSeasonData = async (req, res) => {
   // unpack params
-  const id = req.query.id
+  const userId = req.query.userId
 
   // build query to FPL
-  const url = `${BASE_URL}/entry/${id}/history/`
+  const url = `${BASE_URL}/entry/${userId}/history/`
   const query = await axios.get(url, DEFAULT_OPTIONS)
 
   // overall season data
