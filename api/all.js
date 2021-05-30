@@ -10,6 +10,11 @@ import axios from "axios"
  * This causes a API call to /api/all to time out.
  */
 
+const BASE_URL = "http://fantasy.premierleague.com/api"
+const DEFAULT_OPTIONS = {
+  headers: { 'User-Agent':'Axios 0.21.1' }
+}
+
 /**
  * GET /api/user/id
  *
@@ -23,11 +28,8 @@ export const overallSeasonData = async (req, res) => {
   const id = req.query.id
 
   // build query to FPL
-  const url = `http://fantasy.premierleague.com/api/entry/${id}/history/`
-  const options = {
-    headers: { 'User-Agent':'Axios 0.21.1' }
-  }
-  const query = await axios.get(url, options)
+  const url = `${BASE_URL}/entry/${id}/history/`
+  const query = await axios.get(url, DEFAULT_OPTIONS)
 
   // overall season data
   // [season_name, total_points, rank]
