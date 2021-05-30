@@ -40,7 +40,9 @@ export const overallSeasonData = async (req, res) => {
 /**
  * GET /api/players/names
  *
- * Returns array of player names. Maps ID to name
+ * Returns array of objects with the following properties
+ * - web_name: name displayed in FPL
+ * - id: player ID
  */
 export const playerNames = async (req, res) => {
   // build query to FPL
@@ -49,6 +51,11 @@ export const playerNames = async (req, res) => {
 
   // players data stored in elements
   const players = query.data.elements
-  const playerNames = players.map((one) => one.web_name)
-  res.send(playerNames)
+  const playerInfo = players.map((one) => {
+    return {
+      web_name: one.web_name,
+      id: one.id,
+    }
+  })
+  res.send(playerInfo)
 }
