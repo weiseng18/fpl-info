@@ -4,6 +4,8 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
+import * as _ from "lodash"
+
 const User = () => {
   const router = useRouter()
   const { id } = router.query
@@ -58,6 +60,16 @@ const User = () => {
 
   }, [id])
 
+  /**
+   * Returns a string of the following format:
+   * [Player name] ([Points scored])
+   * @param {*} playerId player's ID (0-indexed)
+   * @param {*} weekId week number (0-indexed)
+   */
+  const getNameAndPoints = (playerId, weekId) => {
+    return playerNames[playerId] + " (" + playerPoints[weekId][playerId] + ")"
+  }
+
   return (
     <Container>
       <VStack my="10" justifyContent="center">
@@ -78,6 +90,31 @@ const User = () => {
                 <Td>{one.rank}</Td>
               </Tr>
             ))}
+          </Tbody>
+        </Table>
+        <Table variant="striped">
+          <TableCaption>Captain performances for user {id}</TableCaption>
+          <Thead>
+            <Tr>
+              <Th>Gameweek</Th>
+              <Th>Chosen Captain</Th>
+              <Th>Your best performer<br/>(excludes bench)</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {picks.map((weekPicks, weekId) => {
+              // check which pick was captain
+              const captain = _.filter(weekPicks, (one) => one.is_captain)[0]
+              // calculate your best performer
+              const bestPerformer = _.maxBy(weekPicks, (one) => playerPoints[weekId][one.id])
+              return (
+                <Tr>
+                  <Td>{weekId + 1}</Td>
+                  <Td>{getNameAndPoints(captain.id, weekId)}</Td>
+                  <Td>{getNameAndPoints(bestPerformer.id, weekId)}</Td>
+                </Tr>
+              )
+            })}
           </Tbody>
         </Table>
       </VStack>
