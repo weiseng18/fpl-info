@@ -10,6 +10,14 @@ import axios from "axios"
  * This causes a API call to /api/all to time out.
  */
 
+/**
+ * GET /api/user/id
+ *
+ * Returns array of objects with the following properties
+ * - season_name: name of the season
+ * - total_points: total points earned within the season
+ * - rank: overall rank for the season
+ */
 export const overallSeasonData = async (req, res) => {
   // unpack params
   const id = req.query.id
