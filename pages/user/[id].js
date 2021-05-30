@@ -1,4 +1,4 @@
-import { VStack, Table, Thead, Tbody, Tr, Th, Td, TableCaption } from "@chakra-ui/react"
+import { VStack, Table, Thead, Tbody, Tr, Th, Td, TableCaption, Container } from "@chakra-ui/react"
 
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -21,27 +21,29 @@ const User = () => {
   }, [id])
 
   return (
-    <VStack my="10" justifyContent="center">
-      <Table variant="striped" w="70%">
-        <TableCaption>FPL overall performance for user {id}</TableCaption>
-        <Thead>
-          <Tr>
-            <Th>Season</Th>
-            <Th>Total Points</Th>
-            <Th>Overall Rank</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {seasonsData.map((one) => (
+    <Container>
+      <VStack my="10" justifyContent="center">
+        <Table variant="striped">
+          <TableCaption>FPL overall performance for user {id}</TableCaption>
+          <Thead>
             <Tr>
-              <Td>{one.season_name}</Td>
-              <Td>{one.total_points}</Td>
-              <Td>{one.rank}</Td>
+              <Th>Season</Th>
+              <Th>Total Points</Th>
+              <Th>Overall Rank</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </VStack>
+          </Thead>
+          <Tbody>
+            {seasonsData.map((one) => (
+              <Tr>
+                <Td>{one.season_name}</Td>
+                <Td>{one.total_points}</Td>
+                <Td>{one.rank}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </VStack>
+    </Container>
   )
 }
 
