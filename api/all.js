@@ -59,3 +59,28 @@ export const playerNames = async (req, res) => {
   })
   res.send(playerInfo)
 }
+
+/**
+ * GET /api/gameweeks/:gameweekId
+ *
+ * Returns dictionary, mapping player ID to points in that gameweek
+ */
+export const gameweekScores = async (req, res) => {
+  // unpack params
+  const gameweekId = req.query.gameweekId
+
+  // build query to FPL
+  const url = `/event/${gameweekId}/live/`
+  const query = await axios.get(url)
+
+  // players data stored in elements
+  const players = query.data.elements
+
+  const pointsInfo = {}
+  players.forEach((one) => {
+    const id = one.id
+    const points = one.stats.total_points
+    pointsInfo[id] = points
+  })
+  res.send(pointsInfo)
+}
