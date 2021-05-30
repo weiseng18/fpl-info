@@ -11,9 +11,10 @@ import axios from "axios"
  */
 
 const BASE_URL = "http://fantasy.premierleague.com/api"
-const DEFAULT_OPTIONS = {
-  headers: { 'User-Agent':'Axios 0.21.1' }
-}
+const USER_AGENT = "Axios 0.21.1"
+
+axios.defaults.baseURL = BASE_URL
+axios.defaults.headers.common['User-Agent'] = USER_AGENT
 
 /**
  * GET /api/users/:userId
@@ -28,8 +29,8 @@ export const overallSeasonData = async (req, res) => {
   const userId = req.query.userId
 
   // build query to FPL
-  const url = `${BASE_URL}/entry/${userId}/history/`
-  const query = await axios.get(url, DEFAULT_OPTIONS)
+  const url = `/entry/${userId}/history/`
+  const query = await axios.get(url)
 
   // overall season data
   // [season_name, total_points, rank]
@@ -44,8 +45,8 @@ export const overallSeasonData = async (req, res) => {
  */
 export const playerNames = async (req, res) => {
   // build query to FPL
-  const url = `${BASE_URL}/bootstrap-static/`
-  const query = await axios.get(url, DEFAULT_OPTIONS)
+  const url = '/bootstrap-static/'
+  const query = await axios.get(url)
 
   // players data stored in elements
   const players = query.data.elements
