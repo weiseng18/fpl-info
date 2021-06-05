@@ -35,7 +35,13 @@ export const overallSeasonData = async (req, res) => {
   // overall season data
   // [season_name, total_points, rank]
   const overallData = query.data.past
-  res.send(overallData)
+
+  // commas as thousands delimiter
+  const rankCommas = overallData.map((one) => ({
+    ...one,
+    rank: one.rank.toLocaleString()
+  }))
+  res.send(rankCommas)
 }
 
 /**
