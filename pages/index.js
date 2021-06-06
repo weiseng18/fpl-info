@@ -8,6 +8,7 @@ const Index = () => {
 
   const [ID, setID] = useState("")
   const [invalid, setInvalid] = useState(false)
+  const [error, setError] = useState("")
 
   const OFF_SEASON = process.env.NEXT_PUBLIC_IS_OFF_SEASON === "true"
 
@@ -17,16 +18,19 @@ const Index = () => {
 
   const handleChange = (e) => {
     setInvalid(false)
+    setError("")
     setID(e.target.value)
   }
 
   const handleSubmit = () => {
     if (ID === "") {
       setInvalid(true)
+      setError("FPL ID cannot be blank")
       return
     }
     if (!hasOnlyDigits(ID)) {
       setInvalid(true)
+      setError("FPL ID should only contain numbers ")
       return
     }
     Router.push(`/user/${ID}`)
@@ -48,6 +52,9 @@ const Index = () => {
                   placeholder="Fill in your FPL ID"
                 />
               </InputGroup>
+              {invalid && error && (
+                <Text color="crimson">Error: {error}</Text>
+              )}
               <Button disabled={invalid || !ID.length} onClick={handleSubmit}>Submit</Button>
             </VStack>
             {OFF_SEASON && (
