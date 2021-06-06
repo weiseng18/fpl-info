@@ -10,6 +10,8 @@ const User = () => {
   const router = useRouter()
   const { id } = router.query
 
+  const OFF_SEASON = process.env.NEXT_PUBLIC_IS_OFF_SEASON === "true"
+
   const [seasonsData, setSeasonsData] = useState([])
   const [playerNames, setPlayerNames] = useState([])
   const [playerPoints, setPlayerPoints] = useState([])
@@ -49,13 +51,19 @@ const User = () => {
     /**
      * Get data
      */
-    getPlayerNames()
-    getGameweekPoints()
 
-    // if ID param is provided
-    if (id) {
+    // overall season data
+    if (id)
       getUserHistory(id)
-      getGameweekPicks(id)
+
+    // these data are only available during the saeason
+    if (!OFF_SEASON) {
+      getPlayerNames()
+      getGameweekPoints()
+
+      // if ID param is provided
+      if (id)
+        getGameweekPicks(id)
     }
 
   }, [id])
@@ -92,31 +100,33 @@ const User = () => {
             ))}
           </Tbody>
         </Table>
-        <Table variant="striped">
-          <TableCaption>Captain performances for user {id}</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>Gameweek</Th>
-              <Th>Chosen Captain</Th>
-              <Th>Your best performer<br/>(excludes bench)</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {picks.map((weekPicks, weekId) => {
-              // check which pick was captain
-              const captain = _.filter(weekPicks, (one) => one.is_captain)[0]
-              // calculate your best performer
-              const bestPerformer = _.maxBy(weekPicks, (one) => playerPoints[weekId][one.id])
-              return (
-                <Tr>
-                  <Td>{weekId + 1}</Td>
-                  <Td>{getNameAndPoints(captain.id, weekId)}</Td>
-                  <Td>{getNameAndPoints(bestPerformer.id, weekId)}</Td>
-                </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
+        {!OFF_SEASON && (
+          <Table variant="striped">
+            <TableCaption>Captain performances for user {id}</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Gameweek</Th>
+                <Th>Chosen Captain</Th>
+                <Th>Your best performer<br/>(excludes bench)</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {picks.map((weekPicks, weekId) => {
+                // check which pick was captain
+                const captain = _.filter(weekPicks, (one) => one.is_captain)[0]
+                // calculate your best performer
+                const bestPerformer = _.maxBy(weekPicks, (one) => playerPoints[weekId][one.id])
+                return (
+                  <Tr>
+                    <Td>{weekId + 1}</Td>
+                    <Td>{getNameAndPoints(captain.id, weekId)}</Td>
+                    <Td>{getNameAndPoints(bestPerformer.id, weekId)}</Td>
+                  </Tr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        )}
       </VStack>
     </Container>
   )
