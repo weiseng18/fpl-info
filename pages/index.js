@@ -11,6 +11,10 @@ const Index = () => {
 
   const OFF_SEASON = process.env.NEXT_PUBLIC_IS_OFF_SEASON === "true"
 
+  const hasOnlyDigits = (val) => {
+    return /^[0-9]+$/.test(val)
+  }
+
   const handleChange = (e) => {
     setInvalid(false)
     setID(e.target.value)
@@ -18,6 +22,10 @@ const Index = () => {
 
   const handleSubmit = () => {
     if (ID === "") {
+      setInvalid(true)
+      return
+    }
+    if (!hasOnlyDigits(ID)) {
       setInvalid(true)
       return
     }
