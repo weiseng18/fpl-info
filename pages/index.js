@@ -7,14 +7,20 @@ import { useState } from "react"
 const Index = () => {
 
   const [ID, setID] = useState("")
+  const [invalid, setInvalid] = useState(false)
 
   const OFF_SEASON = process.env.NEXT_PUBLIC_IS_OFF_SEASON === "true"
 
   const handleChange = (e) => {
+    setInvalid(false)
     setID(e.target.value)
   }
 
   const handleSubmit = () => {
+    if (ID === "") {
+      setInvalid(true)
+      return
+    }
     Router.push(`/user/${ID}`)
   }
 
@@ -26,9 +32,15 @@ const Index = () => {
             <VStack spacing={8}>
               <InputGroup>
                 <InputLeftAddon children={<Text fontWeight="600">FPL ID</Text>} />
-                <Input isRequired onChange={handleChange} placeholder="Fill in your FPL ID"/>
+                <Input
+                  isRequired
+                  isInvalid={invalid}
+                  errorBorderColor="crimson"
+                  onChange={handleChange}
+                  placeholder="Fill in your FPL ID"
+                />
               </InputGroup>
-              <Button onClick={handleSubmit}>Submit</Button>
+              <Button disabled={invalid || !ID.length} onClick={handleSubmit}>Submit</Button>
             </VStack>
             {OFF_SEASON && (
               <Text>It is currently off season for FPL. Only overall season data will be provided.</Text>
