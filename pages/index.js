@@ -22,6 +22,11 @@ const Index = () => {
     setID(e.target.value)
   }
 
+  const handleKeydown = (e) => {
+    if (e.keyCode == 13 || e.key == "Enter")
+      handleSubmit()
+  }
+
   const handleSubmit = () => {
     if (ID === "") {
       setInvalid(true)
@@ -49,6 +54,7 @@ const Index = () => {
                   isInvalid={invalid}
                   errorBorderColor="crimson"
                   onChange={handleChange}
+                  onKeyDown={handleKeydown}
                   placeholder="Fill in your FPL ID"
                 />
               </InputGroup>
